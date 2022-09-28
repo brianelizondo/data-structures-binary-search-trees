@@ -143,7 +143,7 @@ class BinarySearchTree {
     bfs(){
         let toVisitQueue = [this.root];
         let visitedNodes = [];   
-
+ 
         while(toVisitQueue.length) {
             let current = toVisitQueue.shift();
             if(current !== null) visitedNodes.push(current.val);
@@ -161,11 +161,63 @@ class BinarySearchTree {
     }
 
     /** Further Study!
-     * remove(val): Removes a node in the BST with the value val.
-     * Returns the removed node. */
+    * remove(val): Removes a node in the BST with the value val.
+    * Returns the removed node. */
+    remove(val){
+        let currentNode = this.root;
+        let parentNode;
 
-    remove(val) {
+        function findNodeChilds(startNode){
+            let nodesChilds = [];
+            function traverse(currentNode){
+                if(currentNode !== null){
+                    nodesChilds.push(currentNode.val);
+                    if(currentNode.left) traverse(currentNode.left);
+                    if(currentNode.right) traverse(currentNode.right);
+                }
+            }
+            traverse(startNode.right);
+            traverse(startNode.left);
+            return nodesChilds;
+        }
 
+        while(currentNode){
+            if(currentNode.val === val){
+                if(parentNode.left !== null){
+                    if(parentNode.left.val === currentNode.val){
+                        if(currentNode.left === null && currentNode.right === null){
+                            parentNode.left = null;
+                            parentNode.right = null;
+                        }else{
+                            let currentNodeChilds = findNodeChilds(currentNode);
+                            parentNode.left = null;
+                            for(let childVal of currentNodeChilds) this.insert(childVal);
+                        }
+                    }
+                }
+                if(parentNode.right !== null){
+                    if(parentNode.right.val === currentNode.val){
+                        if(currentNode.left === null && currentNode.right === null){
+                            parentNode.left = null;
+                            parentNode.right = null;
+                        }else{
+                            let currentNodeChilds = findNodeChilds(currentNode);
+                            parentNode.right = null;
+                            for(let childVal of currentNodeChilds) this.insert(childVal);
+                        }
+                    }
+                }
+
+                return currentNode;
+            };
+
+            parentNode = currentNode;
+            if(currentNode.val > val){
+                currentNode = currentNode.left;
+            }else{
+                currentNode = currentNode.right;
+            }
+        }
     }
 
     /** Further Study!
