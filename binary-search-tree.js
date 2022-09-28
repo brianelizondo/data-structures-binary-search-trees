@@ -139,10 +139,25 @@ class BinarySearchTree {
     }
 
     /** bfs(): Traverse the array using BFS.
-     * Return an array of visited nodes. */
+    * Return an array of visited nodes. */
+    bfs(){
+        let toVisitQueue = [this.root];
+        let visitedNodes = [];   
 
-    bfs() {
+        while(toVisitQueue.length) {
+            let current = toVisitQueue.shift();
+            if(current !== null) visitedNodes.push(current.val);
 
+            current.children = [];
+            if(current.left !== null) current.children.push(current.left);
+            if(current.right !== null) current.children.push(current.right);
+
+            for(let child of current.children){
+                toVisitQueue.push(child);
+            }
+        }
+
+        return visitedNodes;
     }
 
     /** Further Study!
