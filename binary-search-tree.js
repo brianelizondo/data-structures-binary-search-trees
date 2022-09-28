@@ -221,10 +221,21 @@ class BinarySearchTree {
     }
 
     /** Further Study!
-     * isBalanced(): Returns true if the BST is balanced, false otherwise. */
+    * isBalanced(): Returns true if the BST is balanced, false otherwise. */
+    isBalanced(){
+        function checkMinDepth(node){
+            if(node === null) return 1;
+            return 1 + Math.min(checkMinDepth(node.left), checkMinDepth(node.right));
+        }
 
-    isBalanced() {
+        function checkMaxDepth(node){
+            if(node === null) return 1;
+            return 1 + Math.max(checkMaxDepth(node.left), checkMaxDepth(node.right));
+        }
 
+        const treeMinDepth = checkMinDepth(this.root);
+        const treeMaxDepth = checkMaxDepth(this.root);
+        return treeMaxDepth - treeMinDepth <= 1 ? true : false;
     }
 
     /** Further Study!
